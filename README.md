@@ -1,3 +1,3 @@
-#SonarQube CNES Plugin
+#SonarQube CNES CXX Plugin
 
-CNES plugin for SonarQube: launch analysis directly from the web interface and export reports.
+CNES plugin for SonarQube that launches C/C++ tools automatically.

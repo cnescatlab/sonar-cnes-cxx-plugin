@@ -2,13 +2,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>fr.cnes.sonar.plugins.analysis</groupId>
-  <artifactId>sonar-cnes-plugin</artifactId>
+  <groupId>fr.cnes.sonar.plugins.cxx</groupId>
+  <artifactId>sonar-cnes-cxx-plugin</artifactId>
   <packaging>sonar-plugin</packaging>
-  <version>1.2</version>
+  <version>1.3</version>
 
-  <name>SonarQube CNES Plugin</name>
-  <description>CNES plugin for SonarQube: launch analysis directly from the web interface and export reports.</description>
+  <name>SonarQube CNES CXX Plugin</name>
+  <description>CNES plugin for SonarQube that launches C/C++ tools automatically.</description>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -18,6 +18,22 @@
     <pluginUrl>https://cnes.fr</pluginUrl>
     <pluginOrganizationName>CNES</pluginOrganizationName>
   </properties>
+
+  <licenses>
+    <license>
+      <name>LGPL-3.0</name>
+      <url>https://www.gnu.org/licenses/lgpl-3.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <developers>
+    <developer>
+      <id>begarco</id>
+      <name>Benoît Garçon</name>
+      <organization>CNES</organization>
+    </developer>
+  </developers>
 
   <dependencies>
     <dependency>
@@ -89,7 +105,7 @@
         <extensions>true</extensions>
         <configuration>
           <pluginKey>cnes</pluginKey>
-          <pluginClass>fr.cnes.sonar.plugins.analysis.CnesPlugin</pluginClass>
+          <pluginClass>fr.cnes.sonar.plugins.cxx.CnesCxxPlugin</pluginClass>
         </configuration>
       </plugin>
       <plugin>
