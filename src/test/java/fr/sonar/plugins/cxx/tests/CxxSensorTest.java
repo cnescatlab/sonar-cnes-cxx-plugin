@@ -45,13 +45,19 @@ public class CxxSensorTest {
     }
 
     /**
-     * Assert that the execution of the scan happened correctly
+     * Assert that the execution of the scan happened 'correctly' for a test,
+     * that means that method should not be able to find the first tool: cppcheck
      * by checking the number of issues.
      */
     @Test
     public void executeTest() {
         SensorContextTester context = SensorContextTester.create(new File(PATHNAME));
 
+        // stub for properties
+        context.settings().setProperty("sonar.sources", ".");
+        context.settings().setProperty("sonar.cxx.include", "");
+
+        // tools execution
         sensor.execute(context);
 
         assert(context.allIssues().isEmpty());

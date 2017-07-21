@@ -33,6 +33,74 @@ public class StringManager {
      */
     private static final StringManager ourInstance = new StringManager();
     /**
+     * Property key for the key of include property definition
+     */
+    public static final String INC_PROP_DEF_KEY = "def.prop.inc.key";
+    /**
+     * Property key for the name of include property definition
+     */
+    public static final String INC_PROP_DEF_NAME = "def.prop.inc.name";
+    /**
+     * Property key for the description of include property definition
+     */
+    public static final String INC_PROP_DEF_DESC = "def.prop.inc.desc";
+    /**
+     * Property key for the default value of include property definition
+     */
+    public static final String INC_PROP_DEF_DEFAULT = "def.prop.inc.default";
+    /**
+     * Property key for the src
+     */
+    public static final String SRC_PROPERTY_KEY = "property.key.src";
+    /**
+     * Property key for the inc
+     */
+    public static final String INC_PROPERTY_KEY = "property.key.inc";
+    /**
+     * Property key for the cppcheck command pattern
+     */
+    public static final String CPPCHECK_COMMAND_PATTERN = "cppcheck.command.pattern";
+    /**
+     * Property key for the vera command pattern
+     */
+    public static final String VERA_COMMAND_PATTERN = "vera.command.pattern";
+    /**
+     * Property key for the rats command pattern
+     */
+    public static final String RATS_COMMAND_PATTERN = "rats.command.pattern";
+    /**
+     * Property key for the cppcheck report path
+     */
+    public static final String CPPCHECK_REPORT_PATH_KEY = "cppcheck.report.path.key";
+    /**
+     * Property key for the cppcheck report filename
+     */
+    public static final String CPPCHECK_REPORT_FILENAME = "cppcheck.report.filename";
+    /**
+     * Property key for the vera report path
+     */
+    public static final String VERA_REPORT_PATH_KEY = "vera.report.path.key";
+    /**
+     * Property key for the vera report filename
+     */
+    public static final String VERA_REPORT_FILENAME = "vera.report.filename";
+    /**
+     * Property key for the rats report path
+     */
+    public static final String RATS_REPORT_PATH_KEY = "rats.report.path.key";
+    /**
+     * Property key for the rats report filename
+     */
+    public static final String RATS_REPORT_FILENAME = "rats.report.filename";
+    /**
+     * Property key for the source placeholder
+     */
+    public static final String SRC_PLACEHOLDER = "placeholder.src";
+    /**
+     * Property key for the include placeholder
+     */
+    public static final String INC_PLACEHOLDER = "placeholder.include";
+    /**
      * Gather all the properties concerning the plugin
      */
     private Properties properties = new Properties();
