@@ -20,7 +20,7 @@ public class CnesWs implements WebService {
     @Override
     public void define(Context context) {
         // create the new controller for the cnes web service
-        NewController controller = context.createController(string(CNES_CTRL_KEY));
+        final NewController controller = context.createController(string(CNES_CTRL_KEY));
         // set minimal sonarqube version required
         controller.setSince(string(SONAR_VERSION));
         // set description of the controller
@@ -41,12 +41,12 @@ public class CnesWs implements WebService {
      * @param controller controller to which add the action
      */
     private void scanAction(NewController controller) {
-        NewAction analysis = controller.createAction(string(ANALYZE_KEY));
+        final NewAction analysis = controller.createAction(string(ANALYZE_KEY));
         //set
         analysis.setDescription(string(ANALYZE_DESC));
         analysis.setSince(string(SONAR_VERSION));
-        analysis.setPost(Boolean.FALSE);
-        analysis.setInternal(Boolean.TRUE);
+        analysis.setPost(false);
+        analysis.setInternal(true);
         // new scan task to handle the request and work on the code
         analysis.setHandler(new ScanTask());
         // create parameter of the action
@@ -69,12 +69,12 @@ public class CnesWs implements WebService {
      * @param controller controller to which add the action
      */
     private void healthAction(NewController controller) {
-        NewAction analysis = controller.createAction(string(HEALTH_KEY));
+        final NewAction analysis = controller.createAction(string(HEALTH_KEY));
         //set
         analysis.setDescription(string(HEALTH_DESC));
         analysis.setSince(string(SONAR_VERSION));
-        analysis.setPost(Boolean.FALSE);
-        analysis.setInternal(Boolean.TRUE);
+        analysis.setPost(false);
+        analysis.setInternal(true);
         // new scan task to handle the request and work on the code
         analysis.setHandler(new HealthTask());
     }

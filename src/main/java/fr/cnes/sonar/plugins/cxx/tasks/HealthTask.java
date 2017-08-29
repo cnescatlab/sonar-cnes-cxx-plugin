@@ -31,7 +31,7 @@ public class HealthTask implements RequestHandler {
     public void handle(Request request, Response response) {
 
         // write the json response
-        JsonWriter jsonWriter = response.newJsonWriter();
+        final JsonWriter jsonWriter = response.newJsonWriter();
         jsonWriter.beginObject();
         // add logs to response
         jsonWriter.prop(string(HEALTH_RESPONSE_STATUS), OK);

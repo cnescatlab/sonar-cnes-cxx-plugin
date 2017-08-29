@@ -45,8 +45,14 @@ public class ScanTask implements RequestHandler {
      * Delimiter in url
      */
     private static final String SLASH = "/";
-    static final String FILE_DELETION_ERROR = "The following file could not be deleted: %s.";
-    static final String FILE_PERMISSIONS_ERROR = "Permissions of the following file could not be changed: %s.";
+    /**
+     * Logged message when a file can not be deleted
+     */
+    private static final String FILE_DELETION_ERROR = "The following file could not be deleted: %s.";
+    /**
+     * Logged message when a file can not be set as executable
+     */
+    private static final String FILE_PERMISSIONS_ERROR = "Permissions of the following file could not be changed: %s.";
 
     /**
      * Create a temporary script containing dedicated command executing all cxx tools
@@ -62,45 +68,48 @@ public class ScanTask implements RequestHandler {
 
         // if these strings are empty we use the local directory
         if(sources.isEmpty()) {
+            // sources are researched since the local repository
             sources = ".";
         }
         if(includes.isEmpty()) {
+            // includes are researched since the local repository
             includes = ".";
         }
 
         // construct commands for tools (cppcheck, vera, rats) from the pattern
         // cppcheck
         String cppcheckCommand = string(StringManager.CPPCHECK_COMMAND_PATTERN);
+        cppcheckCommand += " 2> "+string(CPPCHECK_REPORT_FILENAME);
         cppcheckCommand = cppcheckCommand.replaceFirst(string(StringManager.SRC_PLACEHOLDER), sources);
         cppcheckCommand = cppcheckCommand.replaceFirst(string(StringManager.INC_PLACEHOLDER), includes);
         // vera
         String veraCommand = string(StringManager.VERA_COMMAND_PATTERN);
         veraCommand = veraCommand.replaceFirst(string(StringManager.SRC_PLACEHOLDER), sources);
         // rats
-        String ratsCommand = string(StringManager.RATS_COMMAND_PATTERN);
+        String ratsCommand = string(StringManager.RATS_COMMAND_PATTERN)+" > "+string(RATS_REPORT_FILENAME);
         ratsCommand = ratsCommand.replaceFirst(string(StringManager.SRC_PLACEHOLDER), sources);
 
         // create script in a file located in the project's repository
-        File scriptOutput = new File(string(CNES_WORKSPACE)+ SLASH +project+ SLASH +CAT_CXX_SCRIPT_SH);
+        final File scriptOutput = new File(string(CNES_WORKSPACE)+ SLASH +project+ SLASH +CAT_CXX_SCRIPT_SH);
 
         // Write all command lines in a single temporary script
         try (
                 FileWriter script = new FileWriter(scriptOutput)
         ){
             script.write("#!/bin/bash -e");
-            script.write("\ncd "+string(CNES_WORKSPACE)+"/"+project);
+            script.write("\ncd "+string(CNES_WORKSPACE)+SLASH+project);
             script.write(string(CNES_LOG_SEPARATOR)+veraCommand);
             LOGGER.info(veraCommand);
-            script.write(string(CNES_LOG_SEPARATOR)+ratsCommand+" > "+string(RATS_REPORT_FILENAME));
-            LOGGER.info(ratsCommand+" > "+string(RATS_REPORT_FILENAME));
-            script.write(string(CNES_LOG_SEPARATOR)+cppcheckCommand+" 2> "+string(CPPCHECK_REPORT_FILENAME));
-            LOGGER.info(cppcheckCommand+" 2> "+string(CPPCHECK_REPORT_FILENAME));
+            script.write(string(CNES_LOG_SEPARATOR)+ratsCommand);
+            LOGGER.info(ratsCommand);
+            script.write(string(CNES_LOG_SEPARATOR)+cppcheckCommand);
+            LOGGER.info(cppcheckCommand);
         } catch (IOException e) {
             LOGGER.error(e.getMessage(), e);
         }
 
         // give execution rights on the script
-        if(!scriptOutput.setExecutable(Boolean.TRUE)) {
+        if(!scriptOutput.setExecutable(true)) {
             LOGGER.error(String.format(FILE_PERMISSIONS_ERROR, scriptOutput.getName()));
         }
 
@@ -119,10 +128,10 @@ public class ScanTask implements RequestHandler {
         LOGGER.info(command);
 
         // prepare a string builder for the output gathering
-        StringBuilder output = new StringBuilder();
+        final StringBuilder output = new StringBuilder();
 
         // create a new process
-        Process p;
+        final Process p;
         // result to return
         String result = "";
         // execute the process on the runtime
@@ -215,7 +224,7 @@ public class ScanTask implements RequestHandler {
         LOGGER.info(MSG_END);
 
         // write the json response
-        JsonWriter jsonWriter = response.newJsonWriter();
+        final JsonWriter jsonWriter = response.newJsonWriter();
         jsonWriter.beginObject();
         // add logs to response
         jsonWriter.prop(string(ANALYZE_RESPONSE_LOG), logs+string(CNES_LOG_SEPARATOR)+MSG_END);

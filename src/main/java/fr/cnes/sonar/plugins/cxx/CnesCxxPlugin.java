@@ -4,6 +4,7 @@ import fr.cnes.sonar.plugins.cxx.utils.StringManager;
 import fr.cnes.sonar.plugins.cxx.ws.CnesWs;
 import org.sonar.api.Plugin;
 import org.sonar.api.config.PropertyDefinition;
+import org.sonar.api.config.PropertyDefinition.Builder;
 
 import static fr.cnes.sonar.plugins.cxx.utils.StringManager.string;
 
@@ -24,15 +25,25 @@ public class CnesCxxPlugin implements Plugin {
         // add the service to execute c/cpp tools
         context.addExtension(CnesWs.class);
 
+        // retrieve all information about property to set
+        // property key
+        final String propertyKey = string(StringManager.INC_PROP_DEF_KEY);
+        // property name
+        final String propertyName = string(StringManager.INC_PROP_DEF_NAME);
+        // property description
+        final String propertyDescription = string(StringManager.INC_PROP_DEF_DESC);
+        // property default value
+        final String propertyDefaultValue = string(StringManager.INC_PROP_DEF_DEFAULT);
+
         // define a property to give the folder containing headers
         // define the builder
-        PropertyDefinition.Builder builder = PropertyDefinition.builder(string(StringManager.INC_PROP_DEF_KEY));
+        final Builder builder = PropertyDefinition.builder(propertyKey);
         // set attributes
-        builder.name(string(StringManager.INC_PROP_DEF_NAME));
-        builder.description(string(StringManager.INC_PROP_DEF_DESC));
-        builder.defaultValue(string(StringManager.INC_PROP_DEF_DEFAULT));
+        builder.name(propertyName);
+        builder.description(propertyDescription);
+        builder.defaultValue(propertyDefaultValue);
         // build the property
-        PropertyDefinition propertyDefinition = builder.build();
+        final PropertyDefinition propertyDefinition = builder.build();
         // add it to SonarQube context
         context.addExtension(propertyDefinition);
     }

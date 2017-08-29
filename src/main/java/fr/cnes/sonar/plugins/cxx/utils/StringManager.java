@@ -11,7 +11,7 @@ import java.util.logging.Logger;
  *
  * @author begarco
  */
-public class StringManager {
+public final class StringManager {
     /**
      * Separator between two log entries
      */
@@ -204,13 +204,13 @@ public class StringManager {
      *
      * @throws IOException when an error occurred during file reading
      */
-    public void load() throws IOException {
+    private void load() throws IOException {
         // store properties
         this.properties = new Properties();
 
         // read the file
         // load properties file as a stream
-        try (InputStream input = StringManager.class.getClassLoader().getResourceAsStream(PLUGIN_PROPERTIES)) {
+        try (final InputStream input = StringManager.class.getClassLoader().getResourceAsStream(PLUGIN_PROPERTIES)) {
             if (input != null) {
                 // load properties from the stream in an adapted structure
                 this.properties.load(input);
