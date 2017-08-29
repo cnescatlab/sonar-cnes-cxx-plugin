@@ -1,7 +1,7 @@
 package fr.cnes.sonar.plugins.cxx;
 
-import fr.cnes.sonar.plugins.cxx.sensors.CxxSensor;
 import fr.cnes.sonar.plugins.cxx.utils.StringManager;
+import fr.cnes.sonar.plugins.cxx.ws.CnesWs;
 import org.sonar.api.Plugin;
 import org.sonar.api.config.PropertyDefinition;
 
@@ -21,8 +21,8 @@ public class CnesCxxPlugin implements Plugin {
      */
     @Override
     public void define(Context context) {
-        // add the sensor to execute c/cpp tools
-        context.addExtension(CxxSensor.class);
+        // add the service to execute c/cpp tools
+        context.addExtension(CnesWs.class);
 
         // define a property to give the folder containing headers
         // define the builder

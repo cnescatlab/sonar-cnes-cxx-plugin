@@ -101,6 +101,70 @@ public class StringManager {
      */
     public static final String INC_PLACEHOLDER = "placeholder.include";
     /**
+     * Property for controller description
+     */
+    public static final String CNES_CTRL_DESCRIPTION = "cnes.ctrl.description";
+    /**
+     * Property for controller key
+     */
+    public static final String CNES_CTRL_KEY = "cnes.ctrl.key";
+    /**
+     * Property for action 1 (scan) key
+     */
+    public static final String ANALYZE_KEY = "cnes.action.scan.key";
+    /**
+     * Property for action 1 (scan) description
+     */
+    public static final String ANALYZE_DESC = "cnes.action.scan.desc";
+    /**
+     * Property for action 2 (health) key
+     */
+    public static final String HEALTH_KEY = "cnes.action.health.key";
+    /**
+     * Property for action 2 (health) description
+     */
+    public static final String HEALTH_DESC = "cnes.action.health.desc";
+    /**
+     * Property for action 1 (scan) param 1 key
+     */
+    public static final String ANALYZE_PROJECT_KEY = "cnes.action.scan.param.project.key";
+    /**
+     * Property for action 1 (scan) param 1 description
+     */
+    public static final String ANALYZE_PROJECT_DESC = "cnes.action.scan.param.project.desc";
+    /**
+     * Define the minimal version of sonarqube
+     */
+    public static final String SONAR_VERSION = "sonar.version";
+    /**
+     * Define the name of the returned log field
+     */
+    public static final String ANALYZE_RESPONSE_LOG = "cnes.action.scan.response.log";
+    /**
+     * Define the name of the field containing the status of the service
+     */
+    public static final String HEALTH_RESPONSE_STATUS = "cnes.action.health.response.status";
+    /**
+     * Define the root for executing commands
+     */
+    public static final String CNES_WORKSPACE = "cnes.workspace";
+    /**
+     * Define key for sources repository
+     */
+    public static final String ANALYZE_SRC_KEY = "cnes.scan.src.key";
+    /**
+     * Define key for includes repository
+     */
+    public static final String ANALYZE_INC_KEY = "cnes.scan.inc.key";
+    /**
+     * Define description for sources repository
+     */
+    public static final String ANALYZE_SRC_DESC = "cnes.scan.src.desc";
+    /**
+     * Define description for includes repository
+     */
+    public static final String ANALYZE_INC_DESC = "cnes.scan.inc.desc";
+    /**
      * Gather all the properties concerning the plugin
      */
     private Properties properties = new Properties();
