@@ -21,7 +21,7 @@ import static fr.cnes.sonar.plugins.cxx.utils.StringManager.*;
  * Used tools by this class are Vera++, RATS and Cppcheck.
  * They must be installed on the calling system.
  *
- * @author begarco
+ * @author lequal
  */
 public class ScanTask implements RequestHandler {
 

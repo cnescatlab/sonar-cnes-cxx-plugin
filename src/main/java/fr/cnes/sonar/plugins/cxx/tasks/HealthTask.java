@@ -13,7 +13,7 @@ import static fr.cnes.sonar.plugins.cxx.utils.StringManager.string;
  *
  * If all the system is ok, it should return a ok string in the status field
  *
- * @author begarco
+ * @author lequal
  */
 public class HealthTask implements RequestHandler {
 
