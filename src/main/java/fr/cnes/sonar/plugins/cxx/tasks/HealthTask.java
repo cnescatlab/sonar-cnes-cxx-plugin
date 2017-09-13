@@ -16,13 +16,11 @@
  */
 package fr.cnes.sonar.plugins.cxx.tasks;
 
+import fr.cnes.sonar.plugins.cxx.utils.StringManager;
 import org.sonar.api.server.ws.Request;
 import org.sonar.api.server.ws.RequestHandler;
 import org.sonar.api.server.ws.Response;
 import org.sonar.api.utils.text.JsonWriter;
-
-import static fr.cnes.sonar.plugins.cxx.utils.StringManager.HEALTH_RESPONSE_STATUS;
-import static fr.cnes.sonar.plugins.cxx.utils.StringManager.string;
 
 /**
  * Class to run check the health of the system
@@ -44,13 +42,13 @@ public class HealthTask implements RequestHandler {
      * @param response The response which will be returned
      */
     @Override
-    public void handle(Request request, Response response) {
+    public void handle(final Request request, final Response response) {
 
         // write the json response
         final JsonWriter jsonWriter = response.newJsonWriter();
         jsonWriter.beginObject();
         // add logs to response
-        jsonWriter.prop(string(HEALTH_RESPONSE_STATUS), OK);
+        jsonWriter.prop(StringManager.string(StringManager.HEALTH_RESPONSE_STATUS), OK);
         jsonWriter.endObject();
         jsonWriter.close();
     }

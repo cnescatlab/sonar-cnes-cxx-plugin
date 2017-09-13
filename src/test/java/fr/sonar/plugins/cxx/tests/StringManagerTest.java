@@ -27,6 +27,10 @@ import static org.junit.Assert.assertEquals;
  */
 public class StringManagerTest {
 
+	/**
+	 * Just a test string to validate that a request on an invalid
+	 * key does not work.
+	 */
     private static final String NOT_EXIST = "I_DO_NOT_EXIST";
 
     /**

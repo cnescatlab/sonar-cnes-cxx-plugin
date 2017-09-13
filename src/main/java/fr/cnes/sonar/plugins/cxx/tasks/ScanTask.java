@@ -27,8 +27,6 @@ import org.sonar.api.utils.text.JsonWriter;
 import java.io.*;
 import java.util.concurrent.TimeUnit;
 
-import static fr.cnes.sonar.plugins.cxx.utils.StringManager.*;
-
 /**
  * Class to run C/C++ tools during cxx.
  * This class is a sensor and is so called by sonar-scanner
@@ -62,13 +60,19 @@ public class ScanTask implements RequestHandler {
      */
     private static final String SLASH = "/";
     /**
+     * URL for the current folder (a point)
+     */
+    private static final String CURRENT_FOLDER = ".";
+    /**
      * Logged message when a file can not be deleted
      */
-    private static final String FILE_DELETION_ERROR = "The following file could not be deleted: %s.";
+    private static final String FILE_DELETION_ERROR = "The following file "
+    		+ "could not be deleted: %s.";
     /**
      * Logged message when a file can not be set as executable
      */
-    private static final String FILE_PERMISSIONS_ERROR = "Permissions of the following file could not be changed: %s.";
+    private static final String FILE_PERMISSIONS_ERROR = "Permissions of the following file "
+    		+ "could not be changed: %s.";
 
     /**
      * Create a temporary script containing dedicated command executing all cxx tools
@@ -77,7 +81,7 @@ public class ScanTask implements RequestHandler {
      * @param inc sub repository with includes
      * @return The created file
      */
-    private File createScript(String project, String src, String inc) {
+    private File createScript(final String project, final String src, final String inc) {
 
         String sources = src;
         String includes = inc;
@@ -85,40 +89,48 @@ public class ScanTask implements RequestHandler {
         // if these strings are empty we use the local directory
         if(sources.isEmpty()) {
             // sources are researched since the local repository
-            sources = ".";
+            sources = CURRENT_FOLDER;
         }
         if(includes.isEmpty()) {
             // includes are researched since the local repository
-            includes = ".";
+            includes = CURRENT_FOLDER;
         }
 
         // construct commands for tools (cppcheck, vera, rats) from the pattern
         // cppcheck
-        String cppcheckCommand = string(StringManager.CPPCHECK_COMMAND_PATTERN);
-        cppcheckCommand += " 2> "+string(CPPCHECK_REPORT_FILENAME);
-        cppcheckCommand = cppcheckCommand.replaceFirst(string(StringManager.SRC_PLACEHOLDER), sources);
-        cppcheckCommand = cppcheckCommand.replaceFirst(string(StringManager.INC_PLACEHOLDER), includes);
+        String cppcheckCommand = StringManager.string(StringManager.CPPCHECK_COMMAND_PATTERN);
+        cppcheckCommand += " 2> "+StringManager.string(StringManager.CPPCHECK_REPORT_FILENAME);
+        cppcheckCommand = cppcheckCommand.replaceFirst(
+                StringManager.string(StringManager.SRC_PLACEHOLDER), sources);
+        cppcheckCommand = cppcheckCommand.replaceFirst(
+                StringManager.string(StringManager.INC_PLACEHOLDER), includes);
         // vera
-        String veraCommand = string(StringManager.VERA_COMMAND_PATTERN);
-        veraCommand = veraCommand.replaceFirst(string(StringManager.SRC_PLACEHOLDER), sources);
+        String veraCommand = StringManager.string(StringManager.VERA_COMMAND_PATTERN);
+        veraCommand = veraCommand.replaceFirst(
+                StringManager.string(StringManager.SRC_PLACEHOLDER), sources);
         // rats
-        String ratsCommand = string(StringManager.RATS_COMMAND_PATTERN)+" > "+string(RATS_REPORT_FILENAME);
-        ratsCommand = ratsCommand.replaceFirst(string(StringManager.SRC_PLACEHOLDER), sources);
+        String ratsCommand = StringManager.string(StringManager.RATS_COMMAND_PATTERN)+" > "+
+                StringManager.string(StringManager.RATS_REPORT_FILENAME);
+        ratsCommand = ratsCommand.replaceFirst(
+                StringManager.string(StringManager.SRC_PLACEHOLDER), sources);
+
+        final String workspace = StringManager.string(StringManager.CNES_WORKSPACE)+
+                SLASH +project+ SLASH;
 
         // create script in a file located in the project's repository
-        final File scriptOutput = new File(string(CNES_WORKSPACE)+ SLASH +project+ SLASH +CAT_CXX_SCRIPT_SH);
+        final File scriptOutput = new File(workspace + CAT_CXX_SCRIPT_SH);
 
         // Write all command lines in a single temporary script
         try (
                 FileWriter script = new FileWriter(scriptOutput)
         ){
             script.write("#!/bin/bash -e");
-            script.write("\ncd "+string(CNES_WORKSPACE)+SLASH+project);
-            script.write(string(CNES_LOG_SEPARATOR)+veraCommand);
+            script.write("\ncd " + workspace + project);
+            script.write(StringManager.string(StringManager.CNES_LOG_SEPARATOR)+veraCommand);
             LOGGER.info(veraCommand);
-            script.write(string(CNES_LOG_SEPARATOR)+ratsCommand);
+            script.write(StringManager.string(StringManager.CNES_LOG_SEPARATOR)+ratsCommand);
             LOGGER.info(ratsCommand);
-            script.write(string(CNES_LOG_SEPARATOR)+cppcheckCommand);
+            script.write(StringManager.string(StringManager.CNES_LOG_SEPARATOR)+cppcheckCommand);
             LOGGER.info(cppcheckCommand);
         } catch (IOException e) {
             LOGGER.error(e.getMessage(), e);
@@ -139,7 +151,7 @@ public class ScanTask implements RequestHandler {
      * @throws IOException when a stream use goes wrong
      * @throws InterruptedException when a command is not finished
      */
-    protected String executeCommand(String command) throws IOException, InterruptedException {
+    protected String executeCommand(final String command) throws IOException, InterruptedException {
         // log the command to execute
         LOGGER.info(command);
 
@@ -167,9 +179,11 @@ public class ScanTask implements RequestHandler {
             isEnded = p.waitFor(1, TimeUnit.MINUTES);
             try (
                     // collect input
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
+					BufferedReader reader = new BufferedReader(
+					        new InputStreamReader(p.getInputStream()));
                     // collect errors
-                    BufferedReader reader2 = new BufferedReader(new InputStreamReader(p.getErrorStream()))) {
+                    BufferedReader reader2 = new BufferedReader(
+                            new InputStreamReader(p.getErrorStream()))) {
 
                 // append input stream to output
                 String line;
@@ -201,12 +215,13 @@ public class ScanTask implements RequestHandler {
      * @param response The response which will be returned
      */
     @Override
-    public void handle(Request request, Response response) throws Exception {
+    public void handle(final Request request, final Response response) throws Exception {
 
         // get project's information from the request's parameters
-        final String projectName = request.mandatoryParam(string(ANALYZE_PROJECT_KEY));
-        String src = request.param(string(ANALYZE_SRC_KEY));
-        String inc = request.param(string(ANALYZE_INC_KEY));
+        final String projectKey = StringManager.string(StringManager.ANALYZE_PROJECT_KEY);
+        final String projectName = request.mandatoryParam(projectKey);
+        String src = request.param(StringManager.string(StringManager.ANALYZE_SRC_KEY));
+        String inc = request.param(StringManager.string(StringManager.ANALYZE_INC_KEY));
 
         if(inc==null) {
             inc = "";
@@ -216,10 +231,13 @@ public class ScanTask implements RequestHandler {
         }
 
         // create the temporary script to run cxx tools
-        File script = createScript(projectName, src, inc);
+        final File script = createScript(projectName, src, inc);
 
         // log of the tools' execution
         String logs = "";
+
+        final String workspace = StringManager.string(StringManager.CNES_WORKSPACE)
+                +SLASH+projectName+SLASH;
 
         // execute analysis with tools
         // results are placed in following files:
@@ -227,7 +245,7 @@ public class ScanTask implements RequestHandler {
         // + Vera: vera-report.xml
         // + RATS: rats-report.xml
         try {
-            logs = executeCommand(string(CNES_WORKSPACE)+SLASH+projectName+SLASH+CAT_CXX_SCRIPT_SH);
+            logs = executeCommand(workspace+CAT_CXX_SCRIPT_SH);
         } catch (IOException | InterruptedException e) {
             LOGGER.error(e.getMessage(), e);
         }
@@ -243,7 +261,8 @@ public class ScanTask implements RequestHandler {
         final JsonWriter jsonWriter = response.newJsonWriter();
         jsonWriter.beginObject();
         // add logs to response
-        jsonWriter.prop(string(ANALYZE_RESPONSE_LOG), logs+string(CNES_LOG_SEPARATOR)+MSG_END);
+        jsonWriter.prop(StringManager.string(StringManager.ANALYZE_RESPONSE_LOG),
+                logs+StringManager.string(StringManager.CNES_LOG_SEPARATOR)+MSG_END);
         jsonWriter.endObject();
         jsonWriter.close();
     }

@@ -29,7 +29,15 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
  * @author lequal
  */
 public class CnesWsTest {
+	
+	/**
+	 * Parameters number expected for the web service
+	 */
+	private static final int WS_PARAMS_NUMBER = 3;
 
+	/**
+	 * Stubbed controller for testing
+	 */
     private WebService.Controller controller;
 
     /**
@@ -80,7 +88,7 @@ public class CnesWsTest {
         final WebService.Action service = controller.action("scan");
         assertThat(service).isNotNull();
         assertThat(service.key()).isEqualTo("scan");
-        assertThat(service.params().size()).isEqualTo(3);
+        assertThat(service.params().size()).isEqualTo(WS_PARAMS_NUMBER);
         assertThat(!service.isPost());
         assertThat(service.isInternal());
     }

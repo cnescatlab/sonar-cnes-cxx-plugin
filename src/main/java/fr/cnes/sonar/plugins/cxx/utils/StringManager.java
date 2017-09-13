@@ -29,25 +29,13 @@ import java.util.logging.Logger;
  */
 public final class StringManager {
     /**
-     * Separator between two log entries
-     */
-    public static final String CNES_LOG_SEPARATOR = "cnes.log.separator";
-    /**
-     * Logger of this class
-     */
-    private static final Logger LOGGER = Logger.getLogger(StringManager.class.getName());
-    /**
-     * Properties file for the current plugin
-     */
-    private static final String PLUGIN_PROPERTIES = "strings.properties";
-    /**
      * Default string to return when a key is unknown
      */
     public static final String DEFAULT_STRING = "unknown string";
     /**
-     * Unique instance of this class (singleton)
+     * Separator between two log entries
      */
-    private static final StringManager ourInstance = new StringManager();
+    public static final String CNES_LOG_SEPARATOR = "cnes.log.separator";
     /**
      * Property key for the key of include property definition
      */
@@ -181,6 +169,18 @@ public final class StringManager {
      */
     public static final String ANALYZE_INC_DESC = "cnes.scan.inc.desc";
     /**
+     * Logger of this class
+     */
+    private static final Logger LOGGER = Logger.getLogger(StringManager.class.getName());
+    /**
+     * Unique instance of this class (singleton)
+     */
+    private static final StringManager INSTANCE = new StringManager();
+    /**
+     * Properties file for the current plugin
+     */
+    private static final String PLUGIN_PROPERTIES = "strings.properties";
+    /**
      * Gather all the properties concerning the plugin
      */
     private Properties properties = new Properties();
@@ -202,7 +202,7 @@ public final class StringManager {
      * @return unique instance of StringManager
      */
     public static StringManager getInstance() {
-        return ourInstance;
+        return INSTANCE;
     }
 
     /**
@@ -211,7 +211,7 @@ public final class StringManager {
      * @param key Key of the string to string
      * @return the property as String or the DEFAULT_STRING
      */
-    public static String string(String key) {
+    public static String string(final String key) {
         return getInstance().properties.getProperty(key, DEFAULT_STRING);
     }
 
@@ -223,10 +223,14 @@ public final class StringManager {
     private void load() throws IOException {
         // store properties
         this.properties = new Properties();
+        
+        final ClassLoader classLoader = StringManager.class.getClassLoader();
 
         // read the file
         // load properties file as a stream
-        try (final InputStream input = StringManager.class.getClassLoader().getResourceAsStream(PLUGIN_PROPERTIES)) {
+        try (
+        		final InputStream input = classLoader.getResourceAsStream(PLUGIN_PROPERTIES)
+        	) {
             if (input != null) {
                 // load properties from the stream in an adapted structure
                 this.properties.load(input);

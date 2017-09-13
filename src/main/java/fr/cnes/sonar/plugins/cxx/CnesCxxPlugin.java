@@ -22,8 +22,6 @@ import org.sonar.api.Plugin;
 import org.sonar.api.config.PropertyDefinition;
 import org.sonar.api.config.PropertyDefinition.Builder;
 
-import static fr.cnes.sonar.plugins.cxx.utils.StringManager.string;
-
 /**
  * This class is the entry point for all extensions. It is referenced in pom.xml.
  * @author lequal
@@ -37,19 +35,19 @@ public class CnesCxxPlugin implements Plugin {
      * @param context Execution context of the plugin
      */
     @Override
-    public void define(Context context) {
+    public void define(final Context context) {
         // add the service to execute c/cpp tools
         context.addExtension(CnesWs.class);
 
         // retrieve all information about property to set
         // property key
-        final String propertyKey = string(StringManager.INC_PROP_DEF_KEY);
+        final String propertyKey = StringManager.string(StringManager.INC_PROP_DEF_KEY);
         // property name
-        final String propertyName = string(StringManager.INC_PROP_DEF_NAME);
+        final String propertyName = StringManager.string(StringManager.INC_PROP_DEF_NAME);
         // property description
-        final String propertyDescription = string(StringManager.INC_PROP_DEF_DESC);
+        final String propertyDescription = StringManager.string(StringManager.INC_PROP_DEF_DESC);
         // property default value
-        final String propertyDefaultValue = string(StringManager.INC_PROP_DEF_DEFAULT);
+        final String propertyDefValue = StringManager.string(StringManager.INC_PROP_DEF_DEFAULT);
 
         // define a property to give the folder containing headers
         // define the builder
@@ -57,7 +55,7 @@ public class CnesCxxPlugin implements Plugin {
         // set attributes
         builder.name(propertyName);
         builder.description(propertyDescription);
-        builder.defaultValue(propertyDefaultValue);
+        builder.defaultValue(propertyDefValue);
         // build the property
         final PropertyDefinition propertyDefinition = builder.build();
         // add it to SonarQube context
