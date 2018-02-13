@@ -5,14 +5,14 @@
   <groupId>fr.cnes.sonar.plugins.cxx</groupId>
   <artifactId>sonar-cnes-cxx-plugin</artifactId>
   <packaging>sonar-plugin</packaging>
-  <version>1.0</version>
+  <version>1.1</version>
 
   <name>SonarQube CNES CXX Plugin</name>
   <description>CNES plugin for SonarQube that launches C/C++ tools automatically.</description>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <sonar.apiVersion>6.3.1</sonar.apiVersion>
+    <sonar.apiVersion>6.7.1</sonar.apiVersion>
     <sonar.sslr-squid-bridge.version>2.6.1</sonar.sslr-squid-bridge.version>
     <jdk.min.version>1.8</jdk.min.version>
     <pluginUrl>https://cnes.fr</pluginUrl>
