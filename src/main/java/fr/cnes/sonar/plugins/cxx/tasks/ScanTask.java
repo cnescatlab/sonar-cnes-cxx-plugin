@@ -125,7 +125,7 @@ public class ScanTask implements RequestHandler {
                 FileWriter script = new FileWriter(scriptOutput)
         ){
             script.write("#!/bin/bash -e");
-            script.write("\ncd " + workspace + project);
+            script.write("\ncd " + workspace);
             script.write(StringManager.string(StringManager.CNES_LOG_SEPARATOR)+veraCommand);
             LOGGER.info(veraCommand);
             script.write(StringManager.string(StringManager.CNES_LOG_SEPARATOR)+ratsCommand);

@@ -22,7 +22,7 @@ import org.junit.Test;
 import org.sonar.api.server.ws.WebService;
 import org.sonar.api.server.ws.WsTester;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.Assert.*;
 
 /**
  * Test for the CnesWs class
@@ -59,10 +59,10 @@ public class CnesWsTest {
      */
     @Test
     public void controllerTest() {
-        assertThat(controller).isNotNull();
-        assertThat(controller.path()).isEqualTo("api/cnescxx");
-        assertThat(controller.description()).isNotEmpty();
-        assertThat(controller.actions().size()).isEqualTo(2);
+        assertNotNull(controller);
+        assertEquals("api/cnescxx", controller.path());
+        assertFalse(controller.description().isEmpty());
+        assertEquals(2, controller.actions().size());
     }
 
     /**
@@ -72,11 +72,11 @@ public class CnesWsTest {
     @Test
     public void healthWebServiceTest() {
         final WebService.Action service = controller.action("health");
-        assertThat(service).isNotNull();
-        assertThat(service.key()).isEqualTo("health");
-        assertThat(service.params().size()).isEqualTo(0);
-        assert(service.isInternal());
-        assert(!service.isPost());
+        assertNotNull(service);
+        assertEquals("health", service.key());
+        assertEquals(0,service.params().size());
+        assertTrue(service.isInternal());
+        assertTrue(!service.isPost());
     }
 
     /**
@@ -86,11 +86,11 @@ public class CnesWsTest {
     @Test
     public void reportWebServiceTest() {
         final WebService.Action service = controller.action("scan");
-        assertThat(service).isNotNull();
-        assertThat(service.key()).isEqualTo("scan");
-        assertThat(service.params().size()).isEqualTo(WS_PARAMS_NUMBER);
-        assertThat(!service.isPost());
-        assertThat(service.isInternal());
+        assertNotNull(service);
+        assertEquals("scan", service.key());
+        assertEquals(WS_PARAMS_NUMBER, service.params().size());
+        assertFalse(service.isPost());
+        assertTrue(service.isInternal());
     }
 
 }
